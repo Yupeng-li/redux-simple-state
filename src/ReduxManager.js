@@ -11,6 +11,8 @@ class ReduxManager {
     createStore(reducer, preloadedState, enhancer) {
         this.store = reduxCreateStore(reducer, preloadedState, enhancer);
         this._preloadedState = preloadedState;
+        if(this._reducers && Object.keys(this._reducers).length)
+            this.store.replaceReducer(this._combineReducers(this._reducers));
         return this.store;
     }
 
@@ -24,8 +26,6 @@ class ReduxManager {
         this._reducers = {...this._reducers, [name]: reducer};
         if (this.store) {
             this.store.replaceReducer(this._combineReducers(this._reducers));
-        } else {
-            this._throwNotCreatedError();
         }
     }
 
@@ -43,7 +43,6 @@ class ReduxManager {
     dispatch(action) {
         if (!this.store)
             this._throwNotCreatedError();
-        console.log({action});
         return this.store.dispatch(action);
     }
 
@@ -51,9 +50,7 @@ class ReduxManager {
         if (!this.store)
             this._throwNotCreatedError();
 
-        // return this.store.getState();
-        let state = this.store.getState();
-        return state;
+        return this.store.getState();
     }
 
     /*
