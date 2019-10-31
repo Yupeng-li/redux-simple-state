@@ -19,7 +19,7 @@
     "testRegex": "(/test/.*\\.spec\\.js)$"
   },
   "dependencies": {
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "redux": "^4.0.1",
     "reselect": "^4.0.0"
   }
