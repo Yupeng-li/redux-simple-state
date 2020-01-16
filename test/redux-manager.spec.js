@@ -1,4 +1,5 @@
-import {ReduxManager, createState, StateContainer} from "../src"
+import {ReduxManager, createState} from "../src"
+import StateContainer from '../src/StateContainer'
 
 describe("Store set up", () => {
     /* setup the smart state */
@@ -107,9 +108,6 @@ describe("Store set up", () => {
             expect(typeof testStore.testArray.get).toBe("function");
             expect(typeof testStore.testObject.get).toBe("function");
 
-            /* additional get properties for array*/
-            expect(typeof testStore.testArray.getItem).toBe("function"); // need update
-            // expect(typeof smartState.testArray.getItemByIndex).toBe("function"); // need update
         });
 
         /* test the get functionality */
@@ -147,14 +145,6 @@ describe("Store set up", () => {
                 part3: "i'm part 3",
                 part4: "i'm part 4"
             });
-
-            /* additional get properties for array*/
-            expect(
-                testStore.testArray.getItem(item => item === "orion")
-            ).toEqual("orion");
-            expect(testStore.testArray.getItemByIndex(1)).toEqual(
-                "noion"
-            );
         });
 
         /* test the state have a property set and its type is a function */
