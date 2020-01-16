@@ -1,15 +1,13 @@
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import * as TodoActions from '../actions'
 import TodoList from '../components/TodoList'
-import { getVisibleTodos } from '../selectors'
+import todosController from '../controllers/todosController'
 
 const mapStateToProps = state => ({
-  filteredTodos: getVisibleTodos(state)
+  filteredTodos: todosController.selectors.getVisibleTodos(state)
 })
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(TodoActions, dispatch)
+  actions: todosController.actions
 })
 
 

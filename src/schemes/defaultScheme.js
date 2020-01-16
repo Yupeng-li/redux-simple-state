@@ -43,7 +43,7 @@ const actions = {
             reducer: (state, action) => action.value,
         },
         {
-            name: 'updateItem',
+            name: 'updateItems',
             params: ['query', 'value'],
             reducer: (state, action) =>
             {
@@ -60,7 +60,20 @@ const actions = {
             },
         },
         {
-            name: 'deleteItem',
+            name: 'updateAll',
+            params: ["value"],
+            reducer: (state, action) =>
+            {
+                return state.map(item =>
+                {
+                    if (typeof item === 'object')
+                        return Object.assign({}, item, action.value);
+                    else return action.value;
+                });
+            },
+        },
+        {
+            name: 'deleteItems',
             params: ['query'],
             reducer: (state, action) =>
             {
@@ -68,10 +81,15 @@ const actions = {
                     throw new TypeError(
                         `deleteItem expects a function as the parameter, but it received a ${typeof action.query}`,
                     );
-                return [
-                    ...state.slice(0, state.findIndex(action.query)),
-                    ...state.slice(state.findIndex(action.query) + 1),
-                ];
+                return state.filter(item=>!action.query(item));
+            },
+        },
+        {
+            name: 'deleteAll',
+            params: [],
+            reducer: (state, action) =>
+            {
+                return []
             },
         },
         {

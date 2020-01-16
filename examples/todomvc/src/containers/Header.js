@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
 import Header from '../components/Header'
-import { addTodo } from '../actions'
+import todosController from '../controllers/todosController'
 
-export default connect(null, { addTodo })(Header)
+export default connect(null, null)(Header)

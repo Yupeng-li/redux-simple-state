@@ -1,14 +1,14 @@
 import { connect } from 'react-redux'
-import { setVisibilityFilter } from '../actions'
 import Link from '../components/Link'
+import todosController from '../controllers/todosController'
 
 const mapStateToProps = (state, ownProps) => ({
-  active: ownProps.filter === state.visibilityFilter
+  active: ownProps.filter === todosController.state.filter.selector(state)
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   setFilter: () => {
-    dispatch(setVisibilityFilter(ownProps.filter))
+    todosController.state.visibilityFilter.set(ownProps.filter)
   }
 })
 
