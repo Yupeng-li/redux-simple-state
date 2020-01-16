@@ -86,40 +86,8 @@ const actions = {
 };
 
 
-const selectors = {
-    'string': [
-        {
-            name: 'get',
-            create: (self) =>
-            {
-                return state => ld.get(state, self.path);
-            },
-        }],
-    'number': [
-        {
-            name: 'get',
-            create: (self) =>
-            {
-                return state => ld.get(state, self.path);
-            },
-        }],
-    'boolean': [
-        {
-            name: 'get',
-            create: (self) =>
-            {
-                return state => ld.get(state, self.path);
-            },
-        }],
-    'object': [
-        {
-            name: 'get',
-            create: (self) =>
-            {
-                return state => ld.get(state, self.path);
-            },
-        }],
-    'array': [
+const selector = {
+    'string': 
         {
             name: 'get',
             create: (self) =>
@@ -127,28 +95,39 @@ const selectors = {
                 return state => ld.get(state, self.path);
             },
         },
+    'number': 
         {
-            name: 'getItemByIndex',
-            create: (self, index) =>
+            name: 'get',
+            create: (self) =>
             {
-                return createSelector(
-                    state => ld.get(state, self.path),
-                    (value) => value[index],
-                );
+                return state => ld.get(state, self.path);
             },
         },
+    'boolean': 
         {
-            name: 'getItem',
-            create: (self, query) =>
+            name: 'get',
+            create: (self) =>
             {
-                return createSelector(
-                    state => ld.get(state, self.path),
-                    (value) => value.find(query),
-                );
+                return state => ld.get(state, self.path);
             },
         },
-    ],
+    'object': 
+        {
+            name: 'get',
+            create: (self) =>
+            {
+                return state => ld.get(state, self.path);
+            },
+        },
+    'array': 
+        {
+            name: 'get',
+            create: (self) =>
+            {
+                return state => ld.get(state, self.path);
+            },
+        }
 };
 
 
-export default {actions, selectors}
+export default {actions, selector}

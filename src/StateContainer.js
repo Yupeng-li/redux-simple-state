@@ -7,7 +7,7 @@ export default class StateContainer {
         this.initialValue = initialValue;
         this.parent = null;
         this.children = [];
-        this.selectorCreators = {}
+        this.selector = null;
     }
 
     get path() {
