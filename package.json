@@ -13,13 +13,13 @@
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
-    "jest": "^24.8.0"
+    "jest": "^24.9.0"
   },
   "jest": {
     "testRegex": "(/test/.*\\.spec\\.js)$"
   },
   "dependencies": {
-    "lodash": "^4.17.13",
+    "lodash": "^4.17.15",
     "redux": "^4.0.1",
     "reselect": "^4.0.0"
   }

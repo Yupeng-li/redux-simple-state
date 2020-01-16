@@ -5,7 +5,7 @@ import ReduxManager from './ReduxManager';
 
 export default function createState(name, initialValue, schema = defaultScheme) {
     let state = new StateContainer(name, initialValue);
-    const {actions, selectors} = schema;
+    const {actions, selector} = schema;
     let type;
     if (ld.isString(initialValue)) {
         type = "string";
@@ -45,7 +45,7 @@ export default function createState(name, initialValue, schema = defaultScheme) 
     }
 
     mapActionsToState(state, actions[type]);
-    mapSelectorsToState(state, selectors[type]);
+    mapSelectorToState(state, selector[type]);
     return state;
 }
 
@@ -77,17 +77,12 @@ function mapActionsToState(state, actions) {
     }
 }
 
-function mapSelectorsToState(state, selectors) {
-    for (let i = 0; i < selectors.length; i++) {
-        let selector = selectors[i];
-        state[selector.name] = (...args) => {
-            return selector.create(state, ...args)(ReduxManager.getState());
-        };
+function mapSelectorToState(state, selector) {
+    state[selector.name] = (...args) => {
+        return selector.create(state, ...args)(ReduxManager.getState());
+    };
 
-        state.selectorCreators[selector.name] = (...args) => {
-            return selector.create(state, ...args)
-        };
-    }
+    state.selector = selector.create(state);
 }
 
 
