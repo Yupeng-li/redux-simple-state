@@ -13,7 +13,7 @@
     "react-dom": "^16.8.6",
     "react-redux": "^7.0.2",
     "redux": "^4.0.1",
-    "redux-simple-state": "^1.0.5",
+    "redux-simple-state": "^1.0.6",
     "reselect": "^4.0.0",
     "todomvc-app-css": "^2.2.0"
   },

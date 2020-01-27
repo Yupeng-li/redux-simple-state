@@ -1,6 +1,6 @@
 {
   "name": "redux-simple-state",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "src/index.js",
   "repository": "https://github.com/Yupeng-li/redux-simple-state.git",
   "author": "Yupeng <li.yupeng.uk@gmail.com>",
@@ -24,6 +24,6 @@
     "reselect": "^4.0.0"
   },
   "files":[
-    "./src"
+    "/src"
   ]
 }
