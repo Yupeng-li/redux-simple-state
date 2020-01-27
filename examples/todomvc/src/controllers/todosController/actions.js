@@ -13,7 +13,7 @@ export const deleteTodo = id => {
 }
 
 export const editTodo = (id, text) => {
-    state.todos.updateItem(item=>item.id === id, {text});
+    state.todos.updateItems(item=>item.id === id, {text});
 }
 
 export const completeTodo = id => {
@@ -26,7 +26,7 @@ export const completeAllTodos = () => {
 }
 
 export const clearCompleted = () =>{
-    state.todos.deleteItems({completed: true});
+    state.todos.deleteItems(item=>item.completed);
 }
 
 export const setVisibilityFilter = filter => {
