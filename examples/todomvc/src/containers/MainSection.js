@@ -5,8 +5,11 @@ import todosController from '../controllers/todosController'
 const mapStateToProps = state => ({
   todosCount: todosController.selectors.getTodoCount(state),
   completedCount: todosController.selectors.getCompletedTodoCount(state),
-  actions: todosController.actions
 });
+
+MainSection.defaultProps = {
+  actions: todosController.actions,
+};
 
 export default connect(
   mapStateToProps,

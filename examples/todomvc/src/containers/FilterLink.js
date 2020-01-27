@@ -1,18 +1,24 @@
+import React from 'react'
 import { connect } from 'react-redux'
 import Link from '../components/Link'
 import todosController from '../controllers/todosController'
 
-const mapStateToProps = (state, ownProps) => ({
-  active: ownProps.filter === todosController.state.filter.selector(state)
-})
+const FilterLink = ({ filter, selectedFilter, children, setFilter }) =>
+    (
+      <Link onClick={()=>setFilter(filter)} active={selectedFilter === filter}>
+          {children}
+      </Link>
+    );
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  setFilter: () => {
-    todosController.state.visibilityFilter.set(ownProps.filter)
-  }
-})
+const mapStateToProps = (state) => ({
+    selectedFilter: todosController.state.visibilityFilter.selector(state)
+});
+
+FilterLink.defaultProps={
+    setFilter: todosController.actions.setVisibilityFilter
+};
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(Link)
+  null
+)(FilterLink)

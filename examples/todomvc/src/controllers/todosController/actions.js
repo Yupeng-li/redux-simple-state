@@ -1,7 +1,12 @@
 import state from './state'
 
 export const addTodo = (todo)=>{
-    state.todos.addItem(todo);
+    let newId = state.todos.get().reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1;
+    state.todos.addItem({
+        text: todo,
+        completed: false,
+        id: newId
+    });
 }
 export const deleteTodo = id => {
     state.todos.deleteItems(item=>item.id === id);

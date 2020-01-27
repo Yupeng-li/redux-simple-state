@@ -6,14 +6,13 @@ const mapStateToProps = state => ({
   filteredTodos: todosController.selectors.getVisibleTodos(state)
 })
 
-const mapDispatchToProps = dispatch => ({
+TodoList.defaultProps={
   actions: todosController.actions
-})
-
+}
 
 const VisibleTodoList = connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(TodoList)
 
 export default VisibleTodoList
