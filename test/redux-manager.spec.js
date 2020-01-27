@@ -174,22 +174,22 @@ describe("Store set up", () => {
                 value: {part0: 0, part5: 5}
             });
 
-            /* additional set properties for object*/
+            /* additional properties for object*/
             expect(typeof testStore.testObject.update).toBe("function");
             testStore.testObject.update({part5: "str5"});
             expect(ReduxManager.dispatch).toBeCalledWith({type: "testStore.testObject.update", value: {part5: "str5"}});
 
-            /* additional set properties for array*/
-            expect(typeof testStore.testArray.updateItem).toBe("function");
-            testStore.testArray.updateItem(item => item === "orion", "norion");
+            /* additional properties for array*/
+            expect(typeof testStore.testArray.updateItems).toBe("function");
+            testStore.testArray.updateItems(item => item === "orion", "norion");
             expect(ReduxManager.dispatch).toBeCalledWith(expect.objectContaining({
-                type: "testStore.testArray.updateItem",
+                type: "testStore.testArray.updateItems",
                 value: "norion"
             }));
 
-            expect(typeof testStore.testArray.deleteItem).toBe("function");
-            testStore.testArray.deleteItem(item => item === "orion");
-            expect(ReduxManager.dispatch).toBeCalledWith(expect.objectContaining({type: "testStore.testArray.deleteItem"}));
+            expect(typeof testStore.testArray.deleteItems).toBe("function");
+            testStore.testArray.deleteItems(item => item === "orion");
+            expect(ReduxManager.dispatch).toBeCalledWith(expect.objectContaining({type: "testStore.testArray.deleteItems"}));
 
             expect(typeof testStore.testArray.addItem).toBe("function");
             testStore.testArray.addItem("rion");
@@ -199,16 +199,16 @@ describe("Store set up", () => {
             }));
 
             /* additional set properties for array of object*/
-            expect(typeof testStore.testArray.updateItem).toBe("function");
-            testStore.testArray.updateItem(item => item.newObj2 === "orion", {newObj2: "nonion"});
+            expect(typeof testStore.testArray.updateItems).toBe("function");
+            testStore.testArray.updateItems(item => item.newObj2 === "orion", {newObj2: "nonion"});
             expect(ReduxManager.dispatch).toBeCalledWith(expect.objectContaining({
-                type: "testStore.testArray.updateItem",
+                type: "testStore.testArray.updateItems",
                 value: {newObj2: "nonion"}
             }));
 
-            expect(typeof testStore.testArray.deleteItem).toBe("function");
-            testStore.testArray.deleteItem(item => item.obj2 === "onion");
-            expect(ReduxManager.dispatch).toBeCalledWith(expect.objectContaining({type: "testStore.testArray.deleteItem"}));
+            expect(typeof testStore.testArray.deleteItems).toBe("function");
+            testStore.testArray.deleteItems(item => item.obj2 === "onion");
+            expect(ReduxManager.dispatch).toBeCalledWith(expect.objectContaining({type: "testStore.testArray.deleteItems"}));
 
             expect(typeof testStore.testArray.addItem).toBe("function");
             testStore.testArray.addItem({obj5: "norion"});
@@ -235,7 +235,7 @@ describe("Store set up", () => {
                 ],
                 testObject: {part1: "i'm part 1", part2: "i'm part 2"}
             };
-            const store = ReduxManager.createStore((state = null) => state, {});
+            const store = ReduxManager.createStore({});
             ReduxManager.registerState(testStore);
             // ReduxManager.dispatch.mockRestore();
 
@@ -295,15 +295,15 @@ describe("Store set up", () => {
             });
 
             /*  additional reducer functionality for an array*/
-            action = {type: "testStore.testArray.updateItem", query: item => item === "orion", value: "norion"};
+            action = {type: "testStore.testArray.updateItems", query: item => item === "orion", value: "norion"};
             newState = rootReducer(oldState, action);
             expect(newState.testArray).toEqual(["norion", "onion", "roion", "noion"]);
 
-            action = {type: "testStore.testArray.updateItem", query: item => item === "norion", value: "nonrion"};
+            action = {type: "testStore.testArray.updateItems", query: item => item === "norion", value: "nonrion"};
             newState = rootReducer(oldState, action);
             expect(newState.testArray).toEqual(["orion", "onion", "roion", "noion"]);
 
-            action = {type: "testStore.testArray.deleteItem", query: item => item === "orion"};
+            action = {type: "testStore.testArray.deleteItems", query: item => item === "orion"};
             newState = rootReducer(oldState, action);
             expect(newState.testArray).toEqual(["onion", "roion", "noion"]);
 
@@ -319,7 +319,7 @@ describe("Store set up", () => {
 
             /*  additional reducer functionality for an array of object*/
             action = {
-                type: "testStore.testArrayofObject.updateItem",
+                type: "testStore.testArrayofObject.updateItems",
                 query: item => item.obj2 === "onion",
                 value: {obj2: "nonion"}
             };
@@ -330,7 +330,7 @@ describe("Store set up", () => {
                 {obj3: "roion", obj4: "noion"}
             ]);
 
-            action = {type: "testStore.testArrayofObject.deleteItem", query: item => item.obj2 === "onion"};
+            action = {type: "testStore.testArrayofObject.deleteItems", query: item => item.obj2 === "onion"};
             newState = rootReducer(oldState, action);
             expect(newState.testArrayofObject).toEqual([
                 {obj1: "orion"},
