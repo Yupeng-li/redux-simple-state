@@ -75,6 +75,9 @@ function mapActionsToState(state, actions) {
             throw new TypeError(`Params of the action ${actionType} has to be a string or an array of strings`);
         }
     }
+    state["restToDefault"] = ()=>{
+        state.set(state.initialValue);
+    }
 }
 
 function mapSelectorToState(state, selector) {

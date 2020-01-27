@@ -8,7 +8,8 @@ class ReduxManager {
         this._preloadedState = null;
     }
 
-    createStore(reducer, preloadedState, enhancer) {
+    createStore(preloadedState, enhancer) {
+        const reducer  = (state = null) => state;
         this.store = reduxCreateStore(reducer, preloadedState, enhancer);
         this._preloadedState = preloadedState;
         if(this._reducers && Object.keys(this._reducers).length)
