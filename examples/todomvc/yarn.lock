@@ -8460,10 +8460,10 @@ recursive-readdir@2.2.2:
   dependencies:
     minimatch "3.0.4"
 
-redux-simple-state@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/redux-simple-state/-/redux-simple-state-1.0.5.tgz#60c00d2469e5dea399f607912edd0e39c5cab73a"
-  integrity sha512-INz5rEwgiJyJiMR6CXz0MihviWBdgQrEjDhscWuO2SH14rsTWXAKFW9NPFAnr/SO0b7EBCNd6QII28GCY81bJA==
+redux-simple-state@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/redux-simple-state/-/redux-simple-state-1.0.6.tgz#e3dce07c1ec438c71ac6ad59bc81e0ef17cdff14"
+  integrity sha512-c7F/XP78Fe2AIZxyJiWlcAhb/SFW9YIhtQS2s+rSaZix07RvdvmyPgAzD6ndVRnD4PFecHh4hPeyFBXJcnyZFA==
   dependencies:
     lodash "^4.17.15"
     redux "^4.0.1"
