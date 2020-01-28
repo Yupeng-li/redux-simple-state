@@ -8,7 +8,7 @@ actions, reducers and constants can be very cumbersome.
  
 redux-simple-state is a utility to simplify the process when working with Redux-based projects. 
 The goal of this library is to make the Redux as transparent as possible, so that you can read/write 
-states without knowing actions and reducers.It does **NOT** change the behavior of Redux. 
+states without knowing actions and reducers. It does **NOT** change the behavior of Redux. 
 Below is a list of highlighted features.  
 - Dynamically generates actions and reducers  based on the initial state, which allows 
 you to add a new filed to the state or change existing state in a few seconds.
@@ -21,7 +21,7 @@ accessing the Store object directly
 - `ReduxManager` also allows you to inject new state or reducer on the fly
 
 **Note:** `redux-persist` and `seamless-immutable` are **NOT** supported yet.
-##Example
+## Example
 
 Create the store and inject the todos state
 ```js
@@ -36,7 +36,7 @@ const state = createState("todosState", INITIAL_STATE)
 
 const store = ReduxManager.createStore();
 
-//Inject the todos state to the root state
+//Injects the todos state to the state tree
 ReduxManager.registerState(state)
 
 /*
@@ -66,9 +66,9 @@ To insert a new todo to todos
 state.todos.addItem({id:0, text:"first todo", completed:false})
 ```
 
-You can find the completed example from `./examples` folder.  
+You can find the completed example in `./examples` folder.  
 
-##API
+## API
 We generate actions and reducers for a field based on the type of its initial value. These five types are supported. 
 1. Object
 1. String
@@ -78,7 +78,7 @@ We generate actions and reducers for a field based on the type of its initial va
 
 If the default value is `null`, the field is marked as an Object.
 
-###createState
+### createState
 Creates a state. The state is an instance of `StateContainer`. You can inject the state to the store when necessary, 
 and use it to get or set value of a field in it. 
 
@@ -118,10 +118,10 @@ Returns:
 
 A `StateContainer` instance. 
 
-###ReduxManager
+### ReduxManager
 The singleton instance which allows you to access store from anywhere.
 
-####ReduxManager.createStore([preloadedState], [enhancer])
+#### ReduxManager.createStore([preloadedState], [enhancer])
 Creates a Redux store that holds the complete state tree of your app.
 This function is similar as the [createStore](https://redux.js.org/api/createstore#createstorereducer-preloadedstate-enhancer) 
 from Redux except that it doesn't accept default reducer. Please user `ReduxManager.register` or `ReduxManger.registerState`
@@ -134,8 +134,8 @@ Params:
 Returns: 
 - Store (Object): Same as the Redux store object.
 
-####ReduxManager.register(name, reducer)
-Inject the reducer to the store using the given name. 
+#### ReduxManager.register(name, reducer)
+Injects the reducer to the store using the given name. 
 
 Params:
 - name (String): The field name.
@@ -144,8 +144,8 @@ Params:
 Returns: 
 - None
 
-####ReduxManager.registerState(state)
-Inject new state to the store. 
+#### ReduxManager.registerState(state)
+Injects new state to the store. 
 
 Params:
 - state (StateContainer): The state returned by `createState` function. The name of state will be used as the field name.
@@ -153,7 +153,7 @@ Params:
 Returns: 
 - None
 
-####ReduxManager.dispatch(action)
+#### ReduxManager.dispatch(action)
 Dispatches an action to the store. Same as `store.dispatch` in Redux. Please check [Redux document](https://redux.js.org/api/store#dispatchaction) for more details.
 
 Params:
@@ -162,13 +162,13 @@ Params:
 Returns: 
 - (Object): The dispatched action (see notes).
 
-####ReduxManager.getState()
+#### ReduxManager.getState()
 Returns the current state tree of your application. Same as `store.getState` in Redux. Please check [Redux document](https://redux.js.org/api/store#getstate) for more details.
 
 Returns: 
 - (Any): The current state tree of your application.
 
-###StateContainer
+### StateContainer
 A container of a state which gives you all the conveniences to operate the state. You should only create a state container via
 `createState` function. The function will wire the actions and reducers based on the initial value. 
 
