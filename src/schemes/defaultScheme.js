@@ -19,11 +19,6 @@ const actions = {
             name: 'set',
             params: ['value'],
             reducer: (state, action) => action.value,
-        },
-        {
-            name: 'update',
-            params: ['value'],
-            reducer: (state, action) => Object.assign({ ...state }, action.value),
         }],
     'object': [
         {
@@ -105,7 +100,7 @@ const actions = {
 
 
 const selector = {
-    'string': 
+    'string':
         {
             name: 'get',
             create: (self) =>
@@ -113,7 +108,7 @@ const selector = {
                 return state => ld.get(state, self.path);
             },
         },
-    'number': 
+    'number':
         {
             name: 'get',
             create: (self) =>
@@ -121,7 +116,7 @@ const selector = {
                 return state => ld.get(state, self.path);
             },
         },
-    'boolean': 
+    'boolean':
         {
             name: 'get',
             create: (self) =>
@@ -129,7 +124,7 @@ const selector = {
                 return state => ld.get(state, self.path);
             },
         },
-    'object': 
+    'object':
         {
             name: 'get',
             create: (self) =>
@@ -137,7 +132,7 @@ const selector = {
                 return state => ld.get(state, self.path);
             },
         },
-    'array': 
+    'array':
         {
             name: 'get',
             create: (self) =>

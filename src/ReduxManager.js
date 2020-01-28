@@ -17,10 +17,6 @@ class ReduxManager {
         return this.store;
     }
 
-    getReducers() {
-        return {...this._reducers};
-    }
-
     register(name, reducer) {
         if(this._reducers[name]!==undefined)
             throw new Error(`The root store already has the key ${name}.`);
