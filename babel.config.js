@@ -1,12 +1,13 @@
 const presets = [
-    [
-        "@babel/env",
-        {
-            targets: {
-                browsers: ['ie >= 11']
-            },
-        },
-    ],
+  [
+    "@babel/typescript",
+    "@babel/env",
+    {
+      targets: {
+        browsers: ["ie >= 11"]
+      }
+    }
+  ]
 ];
 
 module.exports = { presets };

@@ -7,27 +7,47 @@
   "author": "Yupeng <li.yupeng.uk@gmail.com>",
   "license": "MIT",
   "private": false,
+  "sideEffects": false,
   "scripts": {
+    "clean": "rimraf dist coverage",
+    "check-types": "tsc --noEmit",
+    "build": "rollup -c",
     "test": "jest",
-    "format": "prettier --write \"{src,test}/**/*.{js,ts}\" index.d.ts \"**/*.md\""
+    "format": "pretty-quick",
+    "format:staged": "pretty-quick --staged",
+    "prepare": "npm run clean && npm run check-types && npm test"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
+    "@rollup/plugin-node-resolve": "^7.1.1",
+    "@types/jest": "^25.1.2",
+    "@types/lodash": "^4.14.149",
     "jest": "^24.9.0",
+    "pre-commit": "^1.2.2",
     "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1",
+    "rimraf": "^3.0.2",
+    "rollup": "^1.31.0",
+    "rollup-plugin-typescript2": "^0.25.3",
+    "tslib": "^1.10.0",
     "typescript": "^3.7.5"
   },
   "jest": {
     "testRegex": "(/test/.*\\.spec\\.js)$"
   },
-  "dependencies": {
-    "lodash": "^4.17.15",
+  "peerDependencies": {
     "redux": "^4.0.1",
     "reselect": "^4.0.0"
   },
+  "dependencies": {
+    "lodash": "^4.17.15"
+  },
   "files": [
-    "/src"
+    "/dist"
+  ],
+  "pre-commit": [
+    "format:staged"
   ]
 }

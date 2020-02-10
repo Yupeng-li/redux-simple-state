@@ -4,8 +4,8 @@ import { defaultScheme } from "./schemes";
 import ReduxManager from "./ReduxManager";
 
 export default function createState(
-  name,
-  initialValue,
+  name: string,
+  initialValue: any,
   schema = defaultScheme
 ) {
   let state = new StateContainer(name, initialValue);
