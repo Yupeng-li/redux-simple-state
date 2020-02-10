@@ -1,4 +1,4 @@
-import ReduxManager from './ReduxManager';
-import createState from './createState';
+import ReduxManager from "./ReduxManager";
+import createState from "./createState";
 
-export  {ReduxManager, createState}
+export { ReduxManager, createState };

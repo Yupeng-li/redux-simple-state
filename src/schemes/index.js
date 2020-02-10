@@ -1,3 +1,3 @@
-import defaultScheme from './defaultScheme';
+import defaultScheme from "./defaultScheme";
 
-export {defaultScheme}
+export { defaultScheme };
