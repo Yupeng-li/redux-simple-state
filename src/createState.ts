@@ -2,6 +2,7 @@ import ld from "lodash";
 import StateContainer from "./StateContainer";
 import { defaultScheme } from "./schemes";
 import ReduxManager from "./ReduxManager";
+import { ActionConfig, ActionScheme, SelectorConfig } from "./types/scheme";
 
 export default function createState(
   name: string,
@@ -10,17 +11,23 @@ export default function createState(
 ) {
   let state = new StateContainer(name, initialValue);
   const { actions, selector } = schema;
-  let type;
+  let actionConfigList;
+  let selectorConfig;
   if (ld.isString(initialValue)) {
-    type = "string";
+    actionConfigList = actions.string;
+    selectorConfig = selector.string;
   } else if (ld.isArray(initialValue)) {
-    type = "array";
+    actionConfigList = actions.array;
+    selectorConfig = selector.array;
   } else if (ld.isNumber(initialValue)) {
-    type = "number";
+    actionConfigList = actions.number;
+    selectorConfig = selector.number;
   } else if (ld.isBoolean(initialValue)) {
-    type = "boolean";
+    actionConfigList = actions.boolean;
+    selectorConfig = selector.boolean;
   } else if (initialValue === null || ld.isPlainObject(initialValue)) {
-    type = "object";
+    actionConfigList = actions.object;
+    selectorConfig = selector.object;
   } else {
     throw new Error(
       "initialValue is invalid. It has to be string, number, boolean, array, object or null."
@@ -50,12 +57,15 @@ export default function createState(
     }
   }
 
-  mapActionsToState(state, actions[type]);
-  mapSelectorToState(state, selector[type]);
+  mapActionsToState(state, actionConfigList);
+  mapSelectorToState(state, selectorConfig);
   return state;
 }
 
-function mapActionsToState(state, actions) {
+function mapActionsToState(
+  state: StateContainer,
+  actions: Array<ActionConfig>
+) {
   state.actions = actions;
   for (let i = 0; i < actions.length; i++) {
     let action = actions[i];
@@ -66,13 +76,8 @@ function mapActionsToState(state, actions) {
         let actionType = state.path.concat(".", action.name);
         ReduxManager.dispatch({ type: actionType });
       };
-    } else if (typeof params === "string") {
-      state[action.name] = value => {
-        let actionType = state.path.concat(".", action.name);
-        ReduxManager.dispatch({ type: actionType, [params]: value });
-      };
-    } else if (Array.isArray(params)) {
-      state[action.name] = (...values) => {
+    } else if (ld.isArray(params)) {
+      state[action.name] = (...values: Array<any>) => {
         let actionType = state.path.concat(".", action.name);
         ReduxManager.dispatch({
           type: actionType,
@@ -91,8 +96,8 @@ function mapActionsToState(state, actions) {
   };
 }
 
-function mapSelectorToState(state, selector) {
-  state[selector.name] = (...args) => {
+function mapSelectorToState(state: StateContainer, selector: SelectorConfig) {
+  state[selector.name] = (...args: any[]) => {
     return selector.create(state, ...args)(ReduxManager.getState());
   };
 

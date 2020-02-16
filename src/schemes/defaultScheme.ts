@@ -1,50 +1,52 @@
-import { createSelector } from "reselect";
 import ld from "lodash";
+import { ActionScheme, SelectorScheme, Scheme } from "../types/scheme";
+import { AnyAction } from "redux";
 
-const actions = {
+const actions: ActionScheme = {
   string: [
     {
       name: "set",
       params: ["value"],
-      reducer: (state, action) => action.value
+      reducer: (state: string, action: AnyAction) => action.value
     }
   ],
   number: [
     {
       name: "set",
       params: ["value"],
-      reducer: (state, action) => action.value
+      reducer: (state: number, action: AnyAction) => action.value
     }
   ],
   boolean: [
     {
       name: "set",
       params: ["value"],
-      reducer: (state, action) => action.value
+      reducer: (state: boolean, action: AnyAction) => action.value
     }
   ],
   object: [
     {
       name: "set",
       params: ["value"],
-      reducer: (state, action) => action.value
+      reducer: (state: object, action: AnyAction) => action.value
     },
     {
       name: "update",
       params: ["value"],
-      reducer: (state, action) => Object.assign({}, state, action.value)
+      reducer: (state: object, action: AnyAction) =>
+        Object.assign({}, state, action.value)
     }
   ],
   array: [
     {
       name: "set",
       params: ["value"],
-      reducer: (state, action) => action.value
+      reducer: (state: any[], action: AnyAction) => action.value
     },
     {
       name: "updateItems",
       params: ["query", "value"],
-      reducer: (state, action) => {
+      reducer: (state: any[], action: AnyAction) => {
         return state.map(item => {
           if (action.query(item)) {
             if (typeof item === "object")
@@ -58,7 +60,7 @@ const actions = {
     {
       name: "updateAll",
       params: ["value"],
-      reducer: (state, action) => {
+      reducer: (state: any[], action: AnyAction) => {
         return state.map(item => {
           if (typeof item === "object")
             return Object.assign({}, item, action.value);
@@ -69,7 +71,7 @@ const actions = {
     {
       name: "deleteItems",
       params: ["query"],
-      reducer: (state, action) => {
+      reducer: (state: any[], action: AnyAction) => {
         if (typeof action.query !== "function")
           throw new TypeError(
             `deleteItem expects a function as the parameter, but it received a ${typeof action.query}`
@@ -80,51 +82,52 @@ const actions = {
     {
       name: "deleteAll",
       params: [],
-      reducer: (state, action) => {
+      reducer: (state: any[], action: AnyAction) => {
         return [];
       }
     },
     {
       name: "addItem",
       params: ["item"],
-      reducer: (state, action) => {
+      reducer: (state: any[], action: AnyAction) => {
         return [...state, action.item];
       }
     }
   ]
 };
 
-const selector = {
+const selector: SelectorScheme = {
   string: {
     name: "get",
-    create: self => {
-      return state => ld.get(state, self.path);
+    create: (self: any) => {
+      return (state: any) => ld.get(state, self.path);
     }
   },
   number: {
     name: "get",
-    create: self => {
-      return state => ld.get(state, self.path);
+    create: (self: any) => {
+      return (state: any) => ld.get(state, self.path);
     }
   },
   boolean: {
     name: "get",
-    create: self => {
-      return state => ld.get(state, self.path);
+    create: (self: any) => {
+      return (state: any) => ld.get(state, self.path);
     }
   },
   object: {
     name: "get",
-    create: self => {
-      return state => ld.get(state, self.path);
+    create: (self: any) => {
+      return (state: any) => ld.get(state, self.path);
     }
   },
   array: {
     name: "get",
-    create: self => {
-      return state => ld.get(state, self.path);
+    create: (self: any) => {
+      return (state: any) => ld.get(state, self.path);
     }
   }
 };
 
-export default { actions, selector };
+const defaultScheme: Scheme = { actions, selector };
+export default defaultScheme;
