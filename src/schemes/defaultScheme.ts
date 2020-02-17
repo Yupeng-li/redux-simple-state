@@ -72,10 +72,6 @@ const actions: ActionScheme = {
       name: "deleteItems",
       params: ["query"],
       reducer: (state: any[], action: AnyAction) => {
-        if (typeof action.query !== "function")
-          throw new TypeError(
-            `deleteItem expects a function as the parameter, but it received a ${typeof action.query}`
-          );
         return state.filter(item => !action.query(item));
       }
     },
@@ -96,7 +92,7 @@ const actions: ActionScheme = {
   ]
 };
 
-const selector: SelectorScheme = {
+const selectors: SelectorScheme = {
   string: {
     name: "get",
     create: (self: any) => {
@@ -129,5 +125,5 @@ const selector: SelectorScheme = {
   }
 };
 
-const defaultScheme: Scheme = { actions, selector };
+const defaultScheme: Scheme = { actions, selectors };
 export default defaultScheme;

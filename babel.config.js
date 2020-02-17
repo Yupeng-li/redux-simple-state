@@ -1,13 +1,4 @@
-const presets = [
-  [
-    "@babel/typescript",
-    "@babel/env",
-    {
-      targets: {
-        browsers: ["ie >= 11"]
-      }
-    }
-  ]
-];
+const presets = ["@babel/preset-typescript", "@babel/preset-env"];
+const plugins = ["@babel/plugin-proposal-class-properties"];
 
-module.exports = { presets };
+module.exports = { presets, plugins };

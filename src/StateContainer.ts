@@ -10,7 +10,7 @@ export default class StateContainer implements LooseObject {
   parent: StateContainer | null;
   children: Array<StateContainer>;
   selector: ((state: any) => any | undefined) | null;
-  actions: Array<ActionConfig>;
+  actions: Array<ActionConfig<any>>;
   [extraProps: string]: any;
 
   constructor(name: string, initialValue: any | undefined) {

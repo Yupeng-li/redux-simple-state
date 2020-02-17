@@ -13,6 +13,7 @@
     "check-types": "tsc --noEmit",
     "build": "rollup -c",
     "test": "jest",
+    "test:cov": "npm test -- --coverage",
     "format": "pretty-quick",
     "format:staged": "pretty-quick --staged",
     "prepare": "npm run clean && npm run check-types && npm run test && npm run build"
@@ -20,7 +21,9 @@
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-env": "^7.4.5",
+    "@babel/preset-typescript": "^7.8.3",
     "@rollup/plugin-node-resolve": "^7.1.1",
     "@types/jest": "^25.1.2",
     "@types/lodash": "^4.14.149",
@@ -35,7 +38,7 @@
     "typescript": "^3.7.5"
   },
   "jest": {
-    "testRegex": "(/test/.*\\.spec\\.js)$"
+    "testRegex": "(/test/.*\\.spec\\.ts)$"
   },
   "dependencies": {
     "lodash": "^4.17.15",

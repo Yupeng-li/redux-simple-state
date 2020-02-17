@@ -1,8 +1,8 @@
 import ld from "lodash";
 import StateContainer from "./StateContainer";
 import { defaultScheme } from "./schemes";
-import ReduxManager from "./ReduxManager";
-import { ActionConfig, ActionScheme, SelectorConfig } from "./types/scheme";
+import { ReduxManager } from "../src";
+import { ActionConfig, SelectorConfig } from "./types/scheme";
 
 export default function createState(
   name: string,
@@ -10,24 +10,24 @@ export default function createState(
   schema = defaultScheme
 ) {
   let state = new StateContainer(name, initialValue);
-  const { actions, selector } = schema;
+  const { actions, selectors } = schema;
   let actionConfigList;
   let selectorConfig;
   if (ld.isString(initialValue)) {
     actionConfigList = actions.string;
-    selectorConfig = selector.string;
+    selectorConfig = selectors.string;
   } else if (ld.isArray(initialValue)) {
     actionConfigList = actions.array;
-    selectorConfig = selector.array;
+    selectorConfig = selectors.array;
   } else if (ld.isNumber(initialValue)) {
     actionConfigList = actions.number;
-    selectorConfig = selector.number;
+    selectorConfig = selectors.number;
   } else if (ld.isBoolean(initialValue)) {
     actionConfigList = actions.boolean;
-    selectorConfig = selector.boolean;
+    selectorConfig = selectors.boolean;
   } else if (initialValue === null || ld.isPlainObject(initialValue)) {
     actionConfigList = actions.object;
-    selectorConfig = selector.object;
+    selectorConfig = selectors.object;
   } else {
     throw new Error(
       "initialValue is invalid. It has to be string, number, boolean, array, object or null."
@@ -64,7 +64,7 @@ export default function createState(
 
 function mapActionsToState(
   state: StateContainer,
-  actions: Array<ActionConfig>
+  actions: Array<ActionConfig<any>>
 ) {
   state.actions = actions;
   for (let i = 0; i < actions.length; i++) {
@@ -97,8 +97,8 @@ function mapActionsToState(
 }
 
 function mapSelectorToState(state: StateContainer, selector: SelectorConfig) {
-  state[selector.name] = (...args: any[]) => {
-    return selector.create(state, ...args)(ReduxManager.getState());
+  state[selector.name] = () => {
+    return selector.create(state)(ReduxManager.getState());
   };
 
   state.selector = selector.create(state);

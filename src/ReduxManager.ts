@@ -4,34 +4,50 @@ import {
   Reducer,
   Store,
   StoreEnhancer,
-  Action
+  AnyAction
 } from "redux";
 import StateContainer from "./StateContainer";
 import { LooseObject } from "./types/LooseObject";
+import ld from "lodash";
 
-class ReduxManager {
+export class ReduxManager {
   public store: Store | null;
   private _reducers: LooseObject;
-  private _preloadedState: any;
 
   constructor() {
     this.store = null;
     this._reducers = {};
-    this._preloadedState = null;
   }
 
-  createStore(preloadedState: any, enhancer: StoreEnhancer) {
-    const reducer = (state = null) => state;
-    this.store = reduxCreateStore(reducer, preloadedState, enhancer);
-    this._preloadedState = preloadedState;
-    if (this._reducers && Object.keys(this._reducers).length)
-      this.store.replaceReducer(this._combineReducers());
+  createStore(preloadedState?: any, enhancer?: StoreEnhancer) {
+    /*
+     * Preserve initial state for not-yet-loaded reducers
+     */
+    if (ld.isObject(preloadedState)) {
+      let keys = Object.keys(preloadedState);
+      for (let i = 0; i < keys.length; i++) {
+        let placeHolderReducer: any = (state: any = null) => state;
+        placeHolderReducer.isPlaceHolder = true;
+        this._reducers[keys[i]] = placeHolderReducer;
+      }
+    }
+
+    this.store = reduxCreateStore(
+      this._combineReducers(),
+      preloadedState,
+      enhancer
+    );
     return this.store;
   }
 
-  register(name: string, reducer: Reducer) {
-    if (this._reducers[name] !== undefined)
-      throw new Error(`The root store already has the key ${name}.`);
+  registerReducer(name: string, reducer: Reducer) {
+    if (
+      this._reducers[name] !== undefined &&
+      !this._reducers[name].isPlaceHolder
+    )
+      throw new Error(
+        `Cannot register the reducer. The state tree already has the key ${name}.`
+      );
 
     this._reducers = { ...this._reducers, [name]: reducer };
     if (this.store) {
@@ -40,15 +56,14 @@ class ReduxManager {
   }
 
   registerState(state: StateContainer) {
-    let { name, reducer } = state;
-    // if (!state instanceof StateContainer)
-    //   throw new Error("state has to be an instance of StateContainer");
-    if (state.parent) throw new Error("state has to be the root");
-
-    this.register(state.name, state.reducer);
+    if (state.parent)
+      throw new Error(
+        "Cannot register the nested state, please use the top level state instead."
+      );
+    this.registerReducer(state.name, state.reducer);
   }
 
-  dispatch(action: Action) {
+  dispatch(action: AnyAction) {
     if (!this.store) {
       this._throwNotCreatedError();
     } else {
@@ -64,24 +79,17 @@ class ReduxManager {
     }
   }
 
-  /*
-   * Preserve initial state for not-yet-loaded reducers
-   */
   _combineReducers() {
     const reducerNames = Object.keys(this._reducers);
-    Object.keys(this._preloadedState).forEach(item => {
-      if (reducerNames.indexOf(item) === -1) {
-        this._reducers[item] = (state: any = null) => state;
-      }
-    });
-    return combineReducers(this._reducers);
+    if (reducerNames.length > 0) {
+      return combineReducers(this._reducers);
+    } else {
+      /* Default root reducer */
+      return (state: any = {}) => state;
+    }
   }
 
   _throwNotCreatedError() {
     throw new Error("Store is not created yet. Please call createStore first.");
   }
 }
-
-const reduxManager = new ReduxManager();
-
-export default reduxManager;

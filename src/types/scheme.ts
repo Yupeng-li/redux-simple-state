@@ -1,18 +1,18 @@
 import { AnyAction } from "redux";
 import { Selector } from "reselect";
 
-export type ActionConfig = {
+export type ActionConfig<T> = {
   name: string;
   params: Array<string>;
-  reducer: (state: any | undefined, action: AnyAction) => any;
+  reducer: (state: T, action: AnyAction) => T;
 };
 
 export type ActionScheme = {
-  string: ActionConfig[];
-  number: ActionConfig[];
-  boolean: ActionConfig[];
-  object: ActionConfig[];
-  array: ActionConfig[];
+  string: ActionConfig<string>[];
+  number: ActionConfig<number>[];
+  boolean: ActionConfig<boolean>[];
+  object: ActionConfig<object>[];
+  array: ActionConfig<any[]>[];
 };
 
 export type SelectorConfig = {
@@ -30,5 +30,5 @@ export type SelectorScheme = {
 
 export type Scheme = {
   actions: ActionScheme;
-  selector: SelectorScheme;
+  selectors: SelectorScheme;
 };
