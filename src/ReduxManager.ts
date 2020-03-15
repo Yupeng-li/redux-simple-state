@@ -93,3 +93,6 @@ export class ReduxManager {
     throw new Error("Store is not created yet. Please call createStore first.");
   }
 }
+
+const reduxManager = new ReduxManager();
+export default reduxManager;

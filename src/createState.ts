@@ -1,7 +1,7 @@
 import ld from "lodash";
 import StateContainer from "./StateContainer";
 import { defaultScheme } from "./schemes";
-import { ReduxManager } from "../src";
+import ReduxManager from "../src/ReduxManager";
 import { ActionConfig, SelectorConfig, Scheme } from "./types/scheme";
 
 export default function createState(
