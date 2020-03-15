@@ -172,7 +172,7 @@ describe("ReduxManager", () => {
     rm.registerState(userState);
 
     expect(() => rm.registerState(userState)).toThrow(
-      `Cannot register the reducer. The state tree already has the key ${userState.name}.`
+      `Cannot register the reducer. The state tree already has the key ${userState._name}.`
     );
   });
 

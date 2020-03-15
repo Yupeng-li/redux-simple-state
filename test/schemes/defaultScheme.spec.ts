@@ -1,4 +1,5 @@
 import { defaultScheme } from "../../src/schemes";
+import StateContainer from "../../src/StateContainer";
 
 describe("defaultScheme of string", () => {
   it("contains one action for string", () => {
@@ -21,7 +22,7 @@ describe("defaultScheme of string", () => {
   it("contains a 'get' selector for string", () => {
     const selector = defaultScheme.selectors.string;
     expect(selector.name).toBe("get");
-    const self = { path: "id" };
+    const self = new StateContainer("id", null);
     const selectorFunc = selector.create(self);
     const state = { id: "2" };
     expect(selectorFunc(state)).toBe("2");
@@ -47,7 +48,7 @@ describe("defaultScheme of number", () => {
   it("contains a 'get' selector for number", () => {
     const selector = defaultScheme.selectors.number;
     expect(selector.name).toBe("get");
-    const self = { path: "id" };
+    const self = new StateContainer("id", null);
     const selectorFunc = selector.create(self);
     const state = { id: 22 };
     expect(selectorFunc(state)).toBe(22);
@@ -73,7 +74,7 @@ describe("defaultScheme of boolean", () => {
   it("contains a 'get' selector for boolean", () => {
     const selector = defaultScheme.selectors.boolean;
     expect(selector.name).toBe("get");
-    const self = { path: "active" };
+    const self = new StateContainer("active", null);
     const selectorFunc = selector.create(self);
     const state = { active: true };
     expect(selectorFunc(state)).toBe(true);
@@ -141,7 +142,7 @@ describe("defaultScheme of object", () => {
   it("contains a 'get' selector for object", () => {
     const selector = defaultScheme.selectors.object;
     expect(selector.name).toBe("get");
-    const self = { path: "user" };
+    const self = new StateContainer("user", null);
     const selectorFunc = selector.create(self);
     const state = { user: { id: "2", active: true } };
     expect(selectorFunc(state)).toEqual({ id: "2", active: true });
@@ -242,6 +243,8 @@ describe("defaultScheme of array", () => {
     expect(newState).toEqual(expectedState);
     expect(oldState).not.toBe(newState);
   });
+
+  //TODO  test different type of arrays.
 
   it("contains updateAll action for array", () => {
     let updateAllAction = defaultScheme.actions.array.find(
@@ -427,7 +430,7 @@ describe("defaultScheme of array", () => {
   it("contains a 'get' selector for array", () => {
     const selector = defaultScheme.selectors.array;
     expect(selector.name).toBe("get");
-    const self = { path: "users" };
+    const self = new StateContainer("users", null);
     const selectorFunc = selector.create(self);
     const state = {
       users: [

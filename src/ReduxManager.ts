@@ -11,8 +11,8 @@ import { LooseObject } from "./types/LooseObject";
 import ld from "lodash";
 
 export class ReduxManager {
-  public store: Store | null;
-  private _reducers: LooseObject;
+  store: Store | null;
+  _reducers: LooseObject;
 
   constructor() {
     this.store = null;
@@ -23,7 +23,7 @@ export class ReduxManager {
     /*
      * Preserve initial state for not-yet-loaded reducers
      */
-    if (ld.isObject(preloadedState)) {
+    if (ld.isPlainObject(preloadedState)) {
       let keys = Object.keys(preloadedState);
       for (let i = 0; i < keys.length; i++) {
         let placeHolderReducer: any = (state: any = null) => state;
@@ -56,11 +56,11 @@ export class ReduxManager {
   }
 
   registerState(state: StateContainer) {
-    if (state.parent)
+    if (state._parent)
       throw new Error(
         "Cannot register the nested state, please use the top level state instead."
       );
-    this.registerReducer(state.name, state.reducer);
+    this.registerReducer(state._name, state._reducer);
   }
 
   dispatch(action: AnyAction) {

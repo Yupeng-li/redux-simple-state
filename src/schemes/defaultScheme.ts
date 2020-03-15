@@ -1,6 +1,7 @@
 import ld from "lodash";
 import { ActionScheme, SelectorScheme, Scheme } from "../types/scheme";
 import { AnyAction } from "redux";
+import StateContainer from "../StateContainer";
 
 const actions: ActionScheme = {
   string: [
@@ -49,7 +50,7 @@ const actions: ActionScheme = {
       reducer: (state: any[], action: AnyAction) => {
         return state.map(item => {
           if (action.query(item)) {
-            if (typeof item === "object")
+            if (ld.isPlainObject(item) && ld.isPlainObject(action.value))
               return Object.assign({}, item, action.value);
             else return action.value;
           }
@@ -62,7 +63,7 @@ const actions: ActionScheme = {
       params: ["value"],
       reducer: (state: any[], action: AnyAction) => {
         return state.map(item => {
-          if (typeof item === "object")
+          if (ld.isPlainObject(item) && ld.isPlainObject(action.value))
             return Object.assign({}, item, action.value);
           else return action.value;
         });
@@ -95,32 +96,32 @@ const actions: ActionScheme = {
 const selectors: SelectorScheme = {
   string: {
     name: "get",
-    create: (self: any) => {
-      return (state: any) => ld.get(state, self.path);
+    create: (self: StateContainer) => {
+      return (state: any) => ld.get(state, self._path);
     }
   },
   number: {
     name: "get",
-    create: (self: any) => {
-      return (state: any) => ld.get(state, self.path);
+    create: (self: StateContainer) => {
+      return (state: any) => ld.get(state, self._path);
     }
   },
   boolean: {
     name: "get",
-    create: (self: any) => {
-      return (state: any) => ld.get(state, self.path);
+    create: (self: StateContainer) => {
+      return (state: any) => ld.get(state, self._path);
     }
   },
   object: {
     name: "get",
-    create: (self: any) => {
-      return (state: any) => ld.get(state, self.path);
+    create: (self: StateContainer) => {
+      return (state: any) => ld.get(state, self._path);
     }
   },
   array: {
     name: "get",
-    create: (self: any) => {
-      return (state: any) => ld.get(state, self.path);
+    create: (self: StateContainer) => {
+      return (state: any) => ld.get(state, self._path);
     }
   }
 };

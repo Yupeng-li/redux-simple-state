@@ -5,41 +5,42 @@ import { LooseObject } from "./types/LooseObject";
 import { AnyAction, Reducer } from "redux";
 
 export default class StateContainer implements LooseObject {
-  name: string;
-  initialValue: any | undefined;
-  parent: StateContainer | null;
-  children: Array<StateContainer>;
+  _name: string;
+  _initialValue: any | undefined;
+  _parent: StateContainer | null;
+  _children: Array<StateContainer>;
+  _actions: Array<ActionConfig<any>>;
   selector: ((state: any) => any | undefined) | null;
-  actions: Array<ActionConfig<any>>;
+
   [extraProps: string]: any;
 
-  constructor(name: string, initialValue: any | undefined) {
-    this.name = name;
-    this.initialValue = initialValue;
-    this.parent = null;
-    this.children = [];
+  constructor(name: string, initialValue: any) {
+    this._name = name;
+    this._initialValue = initialValue;
+    this._parent = null;
+    this._children = [];
     this.selector = null;
-    this.actions = [];
+    this._actions = [];
   }
 
-  get path(): string {
-    if (this.parent) {
-      return this.parent.path.concat(".", this.name);
+  get _path(): string {
+    if (this._parent) {
+      return this._parent._path.concat(".", this._name);
     } else {
-      return this.name;
+      return this._name;
     }
   }
 
-  get reducer(): Reducer {
+  get _reducer(): Reducer {
     const self = this;
-    let reducerMap = self.actions.reduce((map: LooseObject, action) => {
-      let actionType = self.path.concat(".", action.name);
+    let reducerMap = self._actions.reduce((map: LooseObject, action) => {
+      let actionType = self._path.concat(".", action.name);
       map[actionType] = action.reducer;
       return map;
     }, {});
-    let subReducerMap = self.children.reduce(
+    let subReducerMap = self._children.reduce(
       (subReducer: LooseObject, child) => {
-        subReducer[child.name] = child.reducer;
+        subReducer[child._name] = child._reducer;
         return subReducer;
       },
       {}
@@ -48,7 +49,7 @@ export default class StateContainer implements LooseObject {
       ? null
       : combineReducers(subReducerMap);
 
-    return (state = self.initialValue, action: AnyAction) => {
+    return (state = self._initialValue, action: AnyAction) => {
       let reducer = reducerMap[action.type];
       if (reducer) {
         return reducer(state, action);

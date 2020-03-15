@@ -1,5 +1,6 @@
 import { AnyAction } from "redux";
 import { Selector } from "reselect";
+import StateContainer from "../StateContainer";
 
 export type ActionConfig<T> = {
   name: string;
@@ -17,7 +18,7 @@ export type ActionScheme = {
 
 export type SelectorConfig = {
   name: string;
-  create: (self: any) => Selector<any, any | undefined>;
+  create: (self: StateContainer) => Selector<any, any | undefined>;
 };
 
 export type SelectorScheme = {
