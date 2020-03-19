@@ -24,6 +24,22 @@ Below is a list of highlighted features.
 
 **Note:** `redux-persist` and `seamless-immutable` are **NOT** supported yet.
 
+## Install
+
+Install `redux` and `reselect` first.
+
+```js
+yarn add redux reselect
+yarn add redux-simple-state
+```
+
+Or
+
+```js
+npm install --save redux reselect
+npm install --save redux-simple-state
+```
+
 ## Example
 
 Create the store and inject the todos state
@@ -79,6 +95,37 @@ state.todos.addItem({ id: 0, text: "first todo", completed: false });
 ```
 
 You can find the completed example in `./examples` folder.
+
+## Use with connected-react-router
+
+```js
+import { applyMiddleware, compose } from "redux";
+import { ReduxManager } from "redux-simple-state";
+import { connectRouter } from "connected-react-router";
+import { routerMiddleware } from "connected-react-router";
+
+export default function configureStore(initialState = {}, history) {
+  const enhancers = [applyMiddleware(routerMiddleware(history))];
+
+  // If Redux DevTools Extension is installed use it, otherwise use Redux compose
+  const composeEnhancers =
+    process.env.NODE_ENV !== "production" &&
+    typeof window === "object" &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+      : compose;
+
+  const store = ReduxManager.createStore(
+    initialState,
+    composeEnhancers(...enhancers)
+  );
+  ReduxManager.registerReducer("router", connectRouter(history));
+  // ... rest of your simple states or reducers
+  // ReduxManager.registerState(myState);
+
+  return { store };
+}
+```
 
 ## API
 
@@ -154,7 +201,7 @@ Returns:
 
 - Store (Object): Same as the Redux store object.
 
-#### ReduxManager.register(name, reducer)
+#### ReduxManager.registerReducer(name, reducer)
 
 Injects the reducer to the store using the given name.
 

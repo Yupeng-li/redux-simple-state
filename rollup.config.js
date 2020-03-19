@@ -8,6 +8,6 @@ export default {
     format: "cjs",
     intend: false
   },
-  external: ["lodash"],
+  external: ["lodash", "redux", "reselect"],
   plugins: [resolve(), typescript({ useTsconfigDeclarationDir: true })]
 };
