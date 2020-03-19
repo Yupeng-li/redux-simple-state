@@ -7376,15 +7376,13 @@ recursive-readdir@2.2.2:
   dependencies:
     minimatch "3.0.4"
 
-redux-simple-state@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/redux-simple-state/-/redux-simple-state-1.0.8.tgz#ae7cd837238664508bea40f9d96cdcda2a5b5045"
+redux-simple-state@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/redux-simple-state/-/redux-simple-state-1.0.9.tgz#6722e15ac0ef1292a4e0f43a7ca121c553cb4bfc"
   dependencies:
-    lodash "^4.17.15"
-    redux "^4.0.5"
-    reselect "^4.0.0"
+    lodash "^4.17.13"
 
-redux@^4.0.1, redux@^4.0.5:
+redux@^4.0.1:
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.5.tgz#4db5de5816e17891de8a80c424232d06f051d93f"
   dependencies:
