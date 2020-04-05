@@ -1,44 +1,6 @@
 # redux-simple-state
 
-In the most situations, we use Redux as a global state store where we can save our data
-globally and share it among the app. However the cost is that we have to deal with actions
-and reducers. Especially for a project with a complex state structure, maintaining the
-actions, reducers and constants can be very cumbersome.
-
-**We just need a place to save data, can we have a simple way to do it?**
-
-redux-simple-state is a utility to simplify the process when working with Redux-based projects.
-The goal of this library is to make the Redux as transparent as possible, so that you can read/write
-states without knowing actions and reducers. It does **NOT** change the behavior of Redux.
-Below is a list of highlighted features.
-
-- Dynamically generates actions and reducers based on the initial state, which allows
-  you to add a new filed to the state or change existing state in a few seconds.
-- Every filed in the state tree has a default selector that you can bind to a view or use
-  in a side-effect library such as `redux-saga`.
-- Has a higher level `get` function and a `set` function to read and write the value
-  of a field without exposing details of state store and dispatching mechanism.
-- `ReduxManager` allows you to getState or dispatch an action from anywhere without
-  accessing the Store object directly
-- `ReduxManager` also allows you to inject new state or reducer on the fly
-
-**Note:** `seamless-immutable` is **NOT** supported yet.
-
-## Install
-
-Install `redux` and `reselect` first.
-
-```js
-yarn add redux reselect
-yarn add redux-simple-state
-```
-
-Or
-
-```js
-npm install --save redux reselect
-npm install --save redux-simple-state
-```
+redux-simple-state automatically generates the redux actions and reducers for you based on the intial state. It lets you add or remove a field in a few seconds and its `get/set` API makes the redux development super easy. Instead of spending hours on maintaining actions and reducers, now you can focus on more important works.
 
 ## Quick start
 
@@ -47,14 +9,16 @@ Create the store and inject the todos state
 ```js
 import { ReduxManager, createState } from "redux-simple-state";
 
+// Create store
+const store = ReduxManager.createStore();
+
 const INITIAL_STATE = {
   todos: [],
   visibilityFilter: "show_all"
 };
 
+// Generate simple state based on the initial state
 const state = createState("todosState", INITIAL_STATE);
-
-const store = ReduxManager.createStore();
 
 //Injects the todos state to the state tree
 ReduxManager.registerState(state);
@@ -94,7 +58,75 @@ To insert a new todo to todos
 state.todos.addItem({ id: 0, text: "first todo", completed: false });
 ```
 
+To add a new field into the state tree, you can just modify the INITIAL_STATE
+
+```js
+const INITIAL_STATE = {
+  todos: [],
+  visibilityFilter: "show_all",
+  user: null
+};
+
+/*
+ *  The state tree now looks like:
+ * {
+ *   todosState:{
+ *       todos:[],
+ *       visibilityFilter: "show_all",
+ *       user: null
+ *   }
+ * }
+ */
+
+// Get value
+let userDetail = this.state.user.get();
+// Set value
+this.state.user.set({ id: "1" });
+```
+
 You can find the completed example in `./examples` folder.
+
+## Introduction
+
+In the most situations, we use Redux as a global state store where we can save our data
+globally and share it among the app. However the cost is that we have to deal with actions
+and reducers. Especially for a project with a complex state structure, maintaining the
+actions, reducers and constants can be very cumbersome.
+
+**We just need a place to save data, can we have a simple way to do it?**
+
+redux-simple-state is a utility to simplify the process when working with Redux-based projects.
+The goal of this library is to make the Redux as transparent as possible, so that you can read/write
+states without knowing actions and reducers. It does **NOT** change the behavior of Redux.
+Below is a list of highlighted features.
+
+- Dynamically generates actions and reducers based on the initial state, which allows
+  you to add a new filed to the state or change existing state in a few seconds.
+- Every filed in the state tree has a default selector that you can bind to a view or use
+  in a side-effect library such as `redux-saga`.
+- Has a higher level `get` function and a `set` function to read and write the value
+  of a field without exposing details of state store and dispatching mechanism.
+- `ReduxManager` allows you to getState or dispatch an action from anywhere without
+  accessing the Store object directly
+- `ReduxManager` also allows you to inject new state or reducer on the fly
+
+**Note:** `seamless-immutable` is **NOT** supported yet.
+
+## Install
+
+Install `redux` and `reselect` first.
+
+```js
+yarn add redux reselect
+yarn add redux-simple-state
+```
+
+Or
+
+```js
+npm install --save redux reselect
+npm install --save redux-simple-state
+```
 
 ## Use with [`connected-react-router`](https://github.com/supasate/connected-react-router)
 
