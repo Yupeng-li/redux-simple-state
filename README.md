@@ -14,7 +14,7 @@ const store = ReduxManager.createStore();
 
 const INITIAL_STATE = {
   todos: [],
-  visibilityFilter: "show_all"
+  visibilityFilter: "SHOW_ALL"
 };
 
 // Generate simple state based on the initial state
@@ -28,7 +28,7 @@ ReduxManager.registerState(state);
  * {
  *   todosState:{
  *       todos:[],
- *       visibilityFilter: "show_all"
+ *       visibilityFilter: "SHOW_ALL"
  *   }
  * }
  */
@@ -43,7 +43,7 @@ let filter = state.visibilityFilter.get();
 To change the value of visibilityFilter:
 
 ```js
-state.visibilityFilter.set("show_completed");
+state.visibilityFilter.set("SHOW_COMPLETED");
 ```
 
 To access the selector of visibilityFilter
@@ -63,7 +63,7 @@ To add a new field into the state tree, you can just modify the INITIAL_STATE
 ```js
 const INITIAL_STATE = {
   todos: [],
-  visibilityFilter: "show_all",
+  visibilityFilter: "SHOW_ALL",
   user: null
 };
 
@@ -72,7 +72,7 @@ const INITIAL_STATE = {
  * {
  *   todosState:{
  *       todos:[],
- *       visibilityFilter: "show_all",
+ *       visibilityFilter: "showSHOW_ALL",
  *       user: null
  *   }
  * }
@@ -85,6 +85,9 @@ this.state.user.set({ id: "1" });
 ```
 
 You can find the completed example in `./examples` folder.
+
+1. todomvc
+1. todomvc-typescript
 
 ## Introduction
 
