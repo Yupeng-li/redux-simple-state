@@ -1,4 +1,4 @@
-import { ReduxManager } from "../src/ReduxManager";
+import { ReduxManager, ReservedActionTypes } from "../src/ReduxManager";
 import createState from "../src/createState";
 import { AnyAction } from "redux";
 
@@ -87,7 +87,7 @@ describe("ReduxManager", () => {
     expect(rm.getState()).toEqual({ user: { id: 2 } });
   });
 
-  it("registerState() throws error when register the same reducer multiple times", () => {
+  it("registerReducer() throws error when register the same reducer multiple times", () => {
     const rm = new ReduxManager();
     rm.createStore();
     let reducer = (state = { id: 0 }, action: AnyAction) => {
@@ -213,5 +213,64 @@ describe("ReduxManager", () => {
       book: { name: "JavaScript: The Good Parts" },
       user: { id: 2 }
     });
+  });
+
+  it("select() can return selected state value", () => {
+    const rm = new ReduxManager();
+    rm.createStore();
+    const userState = createState("user", { id: 0 });
+
+    rm.registerState(userState);
+    const idSelector = state => state.user.id;
+    expect(rm.select(idSelector)).toBe(0);
+  });
+
+  it("select() throws error when store is not created yet", () => {
+    const rm = new ReduxManager();
+    const userState = createState("user", { id: 0 });
+
+    rm.registerState(userState);
+    const idSelector = state => state.user.id;
+    expect(() => rm.select(idSelector)).toThrow(
+      `Store is not created yet. Please call createStore first.`
+    );
+  });
+
+  it("resetState() resets the state to the default value", () => {
+    const rm = new ReduxManager();
+    rm.createStore();
+    const userState = createState("user", { id: 0 });
+    const profileState = createState("profile", { name: "John" });
+
+    rm.registerState(userState);
+    rm.registerState(profileState);
+
+    const action1: AnyAction = { type: "user.id.set", value: 1 };
+    const action2: AnyAction = { type: "profile.name.set", value: "Jack" };
+    rm.dispatch(action1);
+    rm.dispatch(action2);
+    expect(rm.getState()).toEqual({
+      profile: { name: "Jack" },
+      user: { id: 1 }
+    });
+
+    let resetAction = rm.resetState();
+    expect(resetAction).toEqual({ type: ReservedActionTypes.restState });
+
+    expect(rm.getState()).toEqual({
+      profile: { name: "John" },
+      user: { id: 0 }
+    });
+  });
+
+  it("resetState() throws error when store is not created yet", () => {
+    const rm = new ReduxManager();
+    const userState = createState("user", { id: 0 });
+
+    rm.registerState(userState);
+    const idSelector = state => state.user.id;
+    expect(() => rm.resetState()).toThrow(
+      `Store is not created yet. Please call createStore first.`
+    );
   });
 });

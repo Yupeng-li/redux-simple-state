@@ -4,19 +4,32 @@ import {
   Reducer,
   Store,
   StoreEnhancer,
+  CombinedState,
   AnyAction
 } from "redux";
 import StateContainer from "./StateContainer";
 import { LooseObject } from "./types/LooseObject";
 import ld from "lodash";
+import { Selector } from "reselect";
+
+export const ReservedActionTypes = {
+  restState: "_REST_STATE"
+};
 
 export class ReduxManager {
   store: Store | null;
   _reducers: LooseObject;
+  _topLevelReducer: Reducer;
 
   constructor() {
     this.store = null;
     this._reducers = {};
+    this._topLevelReducer = (state = undefined, action: AnyAction) => {
+      if (action.type === ReservedActionTypes.restState) {
+        return undefined;
+      }
+      return state;
+    };
   }
 
   createStore(preloadedState?: any, enhancer?: StoreEnhancer) {
@@ -79,14 +92,37 @@ export class ReduxManager {
     }
   }
 
+  select(selector: Selector<any, any | undefined>) {
+    if (!this.store) {
+      this._throwNotCreatedError();
+    } else {
+      return selector(this.store.getState());
+    }
+  }
+
+  resetState() {
+    if (!this.store) {
+      this._throwNotCreatedError();
+    } else {
+      return this.dispatch({ type: ReservedActionTypes.restState });
+    }
+  }
+
+  _applyTopLevelReducer(reducer: Reducer) {
+    return (state: any | undefined, action: AnyAction) => {
+      let rootState = this._topLevelReducer(state, action);
+      return reducer(rootState, action);
+    };
+  }
+
   _combineReducers() {
     const reducerNames = Object.keys(this._reducers);
+    let reducer: (state: any, action: AnyAction) => any = (state: any = {}) =>
+      state;
     if (reducerNames.length > 0) {
-      return combineReducers(this._reducers);
-    } else {
-      /* Default root reducer */
-      return (state: any = {}) => state;
+      reducer = combineReducers(this._reducers);
     }
+    return this._applyTopLevelReducer(reducer);
   }
 
   _throwNotCreatedError() {

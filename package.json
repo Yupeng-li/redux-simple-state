@@ -1,6 +1,6 @@
 {
   "name": "redux-simple-state",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/Yupeng-li/redux-simple-state.git",
@@ -44,7 +44,7 @@
     "testRegex": "(/test/.*\\.spec\\.ts)$"
   },
   "dependencies": {
-    "lodash": "^4.17.13"
+    "lodash": "^4.17.15"
   },
   "peerDependencies": {
     "redux": "^3.6.0 || ^4.0.0",

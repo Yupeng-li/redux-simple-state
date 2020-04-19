@@ -388,6 +388,69 @@ import { ReduxManager } from "redux-simple-state";
 const currentState = ReduxManager.getState();
 ```
 
+#### ReduxManager.select(selector)
+
+Returns the selected value specified by the selector function.
+
+Params:
+
+- selector (Func): A function that accepts state and returns the selected field value. For example, `(state)=>state.user.id;`
+
+Returns:
+
+- (Any): value.
+
+Example:
+
+```js
+import { ReduxManager } from "redux-simple-state";
+
+let userFullNameSelector = state =>
+  `${state.user.firstName} ${state.user.lastName}`;
+
+const userFullName = ReduxManager.select(userFullNameSelector);
+```
+
+#### ReduxManager.resetState()
+
+Reset the state tree to its initial value.
+
+Returns:
+
+- (Action): The reset action.
+
+Example:
+
+```js
+import { ReduxManager, createState } from "redux-simple-state";
+
+const initialState = { todos: [], visibilityFilter: "SHOW_ALL" };
+
+const todosState = createState("todos", initialState);
+
+ReduxManager.registerState(todosState);
+
+// To add a todo
+todosState.todos.addItem({
+  text: "Buy milk",
+  completed: false,
+  id: 1
+});
+
+// To change visibilityFilter
+todosState.visibilityFilter.set("SHOW_COMPLETED");
+
+ReduxManager.resetState();
+/* The state now is reset to default
+{
+  todos:{
+    todos: [],
+    visibilityFilter: "SHOW_ALL"
+  }
+}
+*/
+```
+
 ### StateContainer
 
 A container of a state which gives you all the conveniences to operate the state. You should only create a state container via
