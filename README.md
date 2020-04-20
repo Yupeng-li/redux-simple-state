@@ -198,6 +198,101 @@ ReduxManager.registerReducer(
 ... //wrap your root component with PersistGate
 ```
 
+## Handle side effects
+
+With `redux-simple-state`, you don't have to use any side effects libraries to handle async and complex synchronous logic. Below is an example to show you how to handle side effect with `redux-simple-state`. Please note that `redux-simple-state` is not a middleware of redux, so no extra config is required.
+
+**Highlights**
+
+1. You can use `async` functions to handle those asynchronous flows. No generator functions, no yields.
+1. No callback hell.
+1. Easy to test
+
+```js
+// myState.js
+const INITIAL_STATE = {
+  items: [],
+  loading: false,
+  requestError: null
+};
+
+const myState = createState("myState", INITIAL_STATE);
+
+export default myState;
+```
+
+```js
+// store.js
+import { ReduxManager, createState } from "redux-simple-state";
+import myState from "myState.js";
+
+const store = ReduxManager.createStore();
+ReduxManager.registerState(myState);
+```
+
+```js
+//controller.js
+
+// Promise version
+export function fetchData(someValue) {
+    myState.loading.set(true);
+    return myAjaxLib.post("/someEndpoint", {data : someValue})
+            .then(response => {
+              mystate.items.set(response.data);
+              myState.loading.set(false);
+              myState.requestError.set(null);
+            })
+            .catch(error => {
+              myState.loading.set(false);
+              myState.requestError.set(error);
+            });
+}
+
+// Async version
+export async function fetchDataAsync(someValue) {
+    myState.loading.set(true);
+    try{
+      let response = await myAjaxLib.post("/someEndpoint", {data : someValue});
+      // let anotherResponse = await myAjaxLib.post("/anotherEndpoint");
+      mystate.items.set(response.data);
+      myState.loading.set(false);
+      myState.requestError.set(null);
+    }
+    catch(error)
+    {
+      myState.loading.set(false);
+      myState.requestError.set(error);
+    }
+}
+
+export function addTodosIfAllowed(todoText) {
+      let todos = myState.todos.get();
+        if(todos.length < MAX_TODOS) {
+            myState.todos.addItem({text : todoText})
+        }
+    }
+}
+```
+
+```js
+// myComponent.js
+import React from 'react'
+import * as myController from 'controller.js'
+
+...
+
+export const myComponent = ({controller})=>{
+  return <button onClick={controller.fetchData}>Click to fetch data</button>
+}
+
+myComponent.defaultProps= {
+  controller: myController
+}
+
+```
+
+If you want to get
+
 ## API
 
 We generate actions and reducers for a field based on the type of its initial value. These five types are supported.

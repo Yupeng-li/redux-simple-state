@@ -1,6 +1,6 @@
 {
   "name": "redux-simple-state",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/Yupeng-li/redux-simple-state.git",
@@ -8,6 +8,16 @@
   "license": "MIT",
   "private": false,
   "sideEffects": false,
+  "keywords": [
+    "redux-simple-state",
+    "redux",
+    "reselect",
+    "reducer",
+    "state",
+    "actions",
+    "selector",
+    "side effects"
+  ],
   "scripts": {
     "clean": "rimraf dist coverage",
     "check-types": "tsc --noEmit",
