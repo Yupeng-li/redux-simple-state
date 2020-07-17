@@ -38,7 +38,7 @@
     "@types/jest": "^25.1.2",
     "@types/lodash": "^4.14.149",
     "jest": "^24.9.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "pre-commit": "^1.2.2",
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
@@ -54,7 +54,7 @@
     "testRegex": "(/test/.*\\.spec\\.ts)$"
   },
   "dependencies": {
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.19"
   },
   "peerDependencies": {
     "redux": "^3.6.0 || ^4.0.0",
